@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentChain - Blockchain for Content Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+            padding-bottom: 100px;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-section {
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary {
+            background: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: white;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-form {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-widget {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .badge-verified {
+            background: var(--success);
+            color: white;
+        }
+        
+        .badge-pending {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .badge-fake {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .reputation-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: .15em solid var(--secondary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--secondary); }
+        }
+        
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .how-it-works-title {
+            color: #2c3e50 !important;
+            text-shadow: none !important;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .copyright-text {
+            font-size: 1rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .copyright-highlight {
+            color: var(--secondary);
+            font-weight: 700;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .copyright-highlight:hover {
+            color: var(--accent);
+            transform: scale(1.05);
+        }
+        
+        .heart {
+            color: var(--accent);
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.1); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="toast-container"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-link"></i> ContentChain
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showHome()">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showDashboard()">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showBlockchainExplorer()">Explorer</a></li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+                </div>
+                <div id="userMenu" style="display: none;">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i> <span id="usernameDisplay"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="showDashboard()"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="typewriter">
+                            <h1 class="hero-title">Fight Fake News</h1>
+                        </div>
+                        <p class="hero-subtitle">ContentChain verifies digital content authenticity using blockchain technology and AI analysis</p>
+                        <button class="btn btn-primary btn-lg pulse" data-bs-toggle="modal" data-bs-target="#verifyModal">
+                            <i class="fas fa-check-circle me-2"></i> Verify Content Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="py-5">
+            <div class="container">
+                <h2 class="section-title">Why ContentChain?</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-center p-4 animated">
+                            <div class="feature-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h3>Blockchain Verification</h3>
+                            <p>Every piece of content is hashed and stored on an immutable blockchain, providing proof of existence and authenticity.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center p-4 animated">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>AI Fact-Checking</h3>
+                            <p>Our AI analyzes content for misinformation, plagiarism, and deepfakes before adding to the blockchain.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center p-4 animated">
+                            <div class="feature-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <h3>Reputation System</h3>
+                            <p>Publishers earn reputation scores based on content authenticity, creating trust networks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="section-title how-it-works-title">How ContentChain Works</h2>
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="card p-4 animated">
+                            <h3 class="text-center mb-4">Content Verification Process</h3>
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</div>
+                                </div>
+                                <div>
+                                    <h5>Content Submission</h5>
+                                    <p>Publishers submit content which is hashed using SHA-256</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</div>
+                                </div>
+                                <div>
+                                    <h5>AI Analysis</h5>
+                                    <p>Our AI checks for facts, plagiarism, and deepfakes</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</div>
+                                </div>
+                                <div>
+                                    <h5>Blockchain Storage</h5>
+                                    <p>Content hash is stored on the immutable blockchain</p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">4</div>
+                                </div>
+                                <div>
+                                    <h5>Verification</h5>
+                                    <p>Users can verify content authenticity using the hash</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="text-center floating">
+                            <img src="https://img.freepik.com/free-vector/blockchain-technology-isometric-icon-vector_1284-63075.jpg?w=826" alt="Blockchain process" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Dashboard Section (initially hidden) -->
+    <section id="dashboard" style="display: none;">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="dashboard-widget text-center">
+                        <h4>Your Reputation Score</h4>
+                        <div class="reputation-score" id="reputationScore">0</div>
+                        <p class="text-muted">Higher scores mean more trust</p>
+                    </div>
+                    
+                    <div class="dashboard-widget">
+                        <h4>Quick Actions</h4>
+                        <button class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#submitContentModal">
+                            <i class="fas fa-plus me-2"></i> Submit Content
+                        </button>
+                        <button class="btn btn-outline-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#verifyModal">
+                            <i class="fas fa-check me-2"></i> Verify Content
+                        </button>
+                        <button class="btn btn-outline-primary w-100" onclick="showBlockchainExplorer()">
+                            <i class="fas fa-link me-2"></i> Blockchain Explorer
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-9">
+                    <div class="dashboard-widget">
+                        <h4>Recent Content</h4>
+                        <div id="recentContentList">
+                            <p class="text-center">No content available. Submit some content to get started!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dashboard-widget text-center">
+                                <h4>Total Blocks</h4>
+                                <div class="reputation-score" id="totalBlocks">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dashboard-widget text-center">
+                                <h4>Total Content</h4>
+                                <div class="reputation-score" id="totalContent">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blockchain Explorer -->
+    <section id="explorer" class="py-5" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Blockchain Explorer</h2>
+            <div class="card p-4">
+                <div class="input-group mb-4">
+                    <input type="text" class="form-control" placeholder="Search by content hash or title" id="searchInput">
+                    <button class="btn btn-primary" onclick="searchContent()">
+                        <i class="fas fa-search me-2"></i> Search
+                    </button>
+                </div>
+                
+                <div id="searchResults"></div>
+                
+                <h4 class="mt-5">Latest Blocks</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Block #</th>
+                                <th>Hash</th>
+                                <th>Previous Hash</th>
+                                <th>Timestamp</th>
+                                <th>Content Items</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blocksTable">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading blockchain data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with Copyright -->
+    <footer class="footer">
+        <div class="container">
+            <p class="copyright-text">
+                Made with <span class="heart">❤️</span> by 
+                <span class="copyright-highlight" onmouseover="animateCopyright()">M Boobeshwaran</span> 
+                and 
+                <span class="copyright-highlight" onmouseover="animateCopyright()">A Aasif</span> 
+                | © 2025 ContentChain. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to ContentChain</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="alert alert-danger" id="loginError" style="display: none;"></div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create an Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="alert alert-danger" id="registerError" style="display: none;"></div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="verifyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Verify Content Authenticity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="verifyForm">
+                        <div class="mb-3">
+                            <label class="form-label">Content Hash</label>
+                            <input type="text" class="form-control" name="hash" placeholder="Enter content hash">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Or Content URL</label>
+                            <input type="url" class="form-control" name="url" placeholder="https://example.com/article">
+                        </div>
+                        <div id="verifyResult"></div>
+                        <button type="submit" class="btn btn-primary w-100">Verify Content</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="submitContentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Submit New Content</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="submitContentForm">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Content Type</label>
+                            <select class="form-select" name="type">
+                                <option value="article">Article</option>
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                                <option value="research">Research Paper</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Content</label>
+                            <textarea class="form-control" name="content" rows="6" required></textarea>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> Your content will be analyzed by our AI and stored on the blockchain if verified.
+                        </div>
+                        <div id="submitContentResult"></div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Content</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-bg-${type} border-0`;
+            toast.id = toastId;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            
+            const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+            bsToast.show();
+            
+            // Remove toast from DOM after it's hidden
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+        
+        // Check if user is logged in
+        function checkAuth() {
+            // Simulate API call to check authentication
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const userData = JSON.parse(user);
+                // Logged in
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('usernameDisplay').textContent = userData.username;
+                showDashboard();
+            } else {
+                // Not logged in
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'none';
+                showHome();
+            }
+        }
+        
+        // Show home page
+        function showHome() {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('home').style.display = 'block';
+            animateOnScroll();
+        }
+        
+        // Show dashboard
+        function showDashboard() {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Load dashboard data
+            loadDashboardData();
+        }
+        
+        // Load dashboard data
+        function loadDashboardData() {
+            // Simulate API call to get dashboard data
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const userData = JSON.parse(user);
+                const allContent = JSON.parse(localStorage.getItem('contentData') || '[]');
+                const userContent = allContent.filter(content => content.author === userData.username);
+                
+                // Calculate reputation score based on verified content
+                const verifiedContent = userContent.filter(content => content.verification_status === 'verified').length;
+                const reputationScore = verifiedContent * 10;
+                
+                // Update dashboard
+                document.getElementById('reputationScore').textContent = reputationScore;
+                document.getElementById('totalContent').textContent = userContent.length;
+                
+                // Get total blocks (from blockchain)
+                const blockchain = JSON.parse(localStorage.getItem('blockchain') || '[]');
+                document.getElementById('totalBlocks').textContent = blockchain.length;
+                
+                // Display recent content
+                let contentHtml = '';
+                if (userContent.length > 0) {
+                    userContent.slice(-5).reverse().forEach(content => {
+                        let badgeClass = 'badge-pending';
+                        if (content.verification_status === 'verified') badgeClass = 'badge-verified';
+                        if (content.verification_status === 'fake') badgeClass = 'badge-fake';
+                        
+                        contentHtml += `
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">${content.title}</h5>
+                                    <p class="card-text">${content.content.substring(0, 100)}...</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="content-badge ${badgeClass}">${content.verification_status}</span>
+                                        <small class="text-muted">By ${content.author}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    contentHtml = '<p class="text-center">No content available. Submit some content to get started!</p>';
+                }
+                document.getElementById('recentContentList').innerHTML = contentHtml;
+            }
+        }
+        
+        // Show blockchain explorer
+        function showBlockchainExplorer() {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('explorer').style.display = 'block';
+            
+            // Load blockchain data
+            const blockchain = JSON.parse(localStorage.getItem('blockchain') || '[]');
+            
+            let blocksHtml = '';
+            if (blockchain.length > 0) {
+                blockchain.slice().reverse().forEach(block => {
+                    blocksHtml += `
+                        <tr>
+                            <td>${block.index}</td>
+                            <td class="text-truncate" style="max-width: 150px;" title="${block.hash}">${block.hash.substring(0, 20)}...</td>
+                            <td class="text-truncate" style="max-width: 150px;" title="${block.previous_hash}">${block.previous_hash.substring(0, 20)}...</td>
+                            <td>${new Date(block.timestamp).toLocaleString()}</td>
+                            <td>${block.data ? block.data.length : 0}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                blocksHtml = '<tr><td colspan="5" class="text-center">No blocks found</td></tr>';
+            }
+            document.getElementById('blocksTable').innerHTML = blocksHtml;
+        }
+        
+        // Search content
+        function searchContent() {
+            const query = document.getElementById('searchInput').value;
+            if (!query) return;
+            
+            // Simulate API call to search content
+            const allContent = JSON.parse(localStorage.getItem('contentData') || '[]');
+            const results = allContent.filter(content => 
+                content.title.toLowerCase().includes(query.toLowerCase()) || 
+                content.hash.includes(query)
+            );
+            
+            let resultsHtml = '';
+            if (results.length > 0) {
+                resultsHtml = '<h5>Search Results</h5>';
+                results.forEach(content => {
+                    let badgeClass = 'badge-pending';
+                    if (content.verification_status === 'verified') badgeClass = 'badge-verified';
+                    if (content.verification_status === 'fake') badgeClass = 'badge-fake';
+                    
+                    resultsHtml += `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${content.title}</h5>
+                                <p class="card-text">${content.content.substring(0, 150)}...</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="content-badge ${badgeClass}">${content.verification_status}</span>
+                                    <small class="text-muted">Hash: ${content.hash.substring(0, 20)}...</small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                resultsHtml = '<div class="alert alert-info">No content found matching your search</div>';
+            }
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+        }
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            document.getElementById('loginError').style.display = 'none';
+            
+            // Simulate API call for login
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                showToast('Login successful!', 'success');
+                // Store current user in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                // Close modal
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+                // Update UI
+                checkAuth();
+            } else {
+                document.getElementById('loginError').textContent = 'Invalid credentials';
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+        
+        // Register form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const username = formData.get('username');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            document.getElementById('registerError').style.display = 'none';
+            
+            // Simulate API call for registration
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            if (users.some(u => u.email === email)) {
+                document.getElementById('registerError').textContent = 'User with this email already exists';
+                document.getElementById('registerError').style.display = 'block';
+                return;
+            }
+            
+            // Add new user
+            const newUser = { username, email, password };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            showToast('Registration successful! You can now login.', 'success');
+            // Close modal
+            const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+            registerModal.hide();
+            // Clear form
+            document.getElementById('registerForm').reset();
+        });
+        
+        // Verify content form submission
+        document.getElementById('verifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const hash = formData.get('hash');
+            
+            // Simulate API call to verify content
+            const allContent = JSON.parse(localStorage.getItem('contentData') || '[]');
+            const content = allContent.find(c => c.hash === hash);
+            
+            let resultHtml = '';
+            if (content) {
+                let badgeClass = 'badge-pending';
+                if (content.verification_status === 'verified') badgeClass = 'badge-verified';
+                if (content.verification_status === 'fake') badgeClass = 'badge-fake';
+                
+                // Simulate AI verification data
+                const aiVerification = {
+                    fact_check_score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
+                    plagiarism_detected: Math.random() > 0.7, // 30% chance of plagiarism
+                    deepfake_detected: Math.random() > 0.9 // 10% chance of deepfake
+                };
+                
+                // Simulate community votes
+                const communityVotes = {
+                    trust: Math.floor(Math.random() * 50) + 20,
+                    no_trust: Math.floor(Math.random() * 20)
+                };
+                
+                resultHtml = `
+                    <div class="alert alert-success mt-3">
+                        <h5>Content Verification Result</h5>
+                        <p><strong>Title:</strong> ${content.title}</p>
+                        <p><strong>Author:</strong> ${content.author}</p>
+                        <p><strong>Published:</strong> ${new Date(content.timestamp).toLocaleString()}</p>
+                        <p><strong>Status:</strong> <span class="content-badge ${badgeClass}">${content.verification_status}</span></p>
+                        <p><strong>AI Fact-Check Score:</strong> ${aiVerification.fact_check_score}%</p>
+                        <p><strong>Community Trust:</strong> ${communityVotes.trust} 👍 / ${communityVotes.no_trust} 👎</p>
+                    </div>
+                `;
+            } else {
+                resultHtml = `
+                    <div class="alert alert-warning mt-3">
+                        This content has not been verified by ContentChain. Be cautious and verify from other sources.
+                    </div>
+                `;
+            }
+            document.getElementById('verifyResult').innerHTML = resultHtml;
+        });
+        
+        // Submit content form submission
+        document.getElementById('submitContentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const title = formData.get('title');
+            const type = formData.get('type');
+            const contentText = formData.get('content');
+            
+            // Get current user
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.username) {
+                showToast('Please login to submit content', 'error');
+                return;
+            }
+            
+            // Generate content hash
+            const hash = generateHash(title + contentText + Date.now());
+            
+            // Create content object
+            const newContent = {
+                id: Date.now(),
+                title,
+                type,
+                content: contentText,
+                author: user.username,
+                hash,
+                timestamp: new Date().toISOString(),
+                verification_status: Math.random() > 0.3 ? 'verified' : 'pending' // 70% chance of being verified
+            };
+            
+            // Save content
+            const allContent = JSON.parse(localStorage.getItem('contentData') || '[]');
+            allContent.push(newContent);
+            localStorage.setItem('contentData', JSON.stringify(allContent));
+            
+            // Add to blockchain
+            addToBlockchain(newContent);
+            
+            let resultHtml = `
+                <div class="alert alert-success mt-3">
+                    <h5>Content Submitted Successfully!</h5>
+                    <p>Your content has been submitted for verification. It will be analyzed by our AI and added to the blockchain.</p>
+                    <p><strong>Content Hash:</strong> ${hash}</p>
+                    <p>Use this hash to verify your content later.</p>
+                </div>
+            `;
+            
+            document.getElementById('submitContentResult').innerHTML = resultHtml;
+            document.getElementById('submitContentForm').reset();
+            
+            // Refresh dashboard data
+            loadDashboardData();
+        });
+        
+        // Generate a simple hash (for demo purposes)
+        function generateHash(input) {
+            let hash = 0;
+            for (let i = 0; i < input.length; i++) {
+                hash = ((hash << 5) - hash) + input.charCodeAt(i);
+                hash |= 0; // Convert to 32bit integer
+            }
+            return Math.abs(hash).toString(16);
+        }
+        
+        // Add content to blockchain
+        function addToBlockchain(content) {
+            let blockchain = JSON.parse(localStorage.getItem('blockchain') || '[]');
+            
+            // Create new block
+            const previousHash = blockchain.length > 0 ? blockchain[blockchain.length - 1].hash : '0';
+            const timestamp = new Date().toISOString();
+            const blockData = [content];
+            
+            // Create block hash
+            const blockHash = generateHash(previousHash + timestamp + JSON.stringify(blockData));
+            
+            const newBlock = {
+                index: blockchain.length,
+                timestamp,
+                data: blockData,
+                previous_hash: previousHash,
+                hash: blockHash
+            };
+            
+            blockchain.push(newBlock);
+            localStorage.setItem('blockchain', JSON.stringify(blockchain));
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('currentUser');
+            showToast('Logged out successfully', 'info');
+            checkAuth();
+        }
+        
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animated');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                if (position.top < window.innerHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        // Animate copyright text
+        function animateCopyright() {
+            const hearts = document.querySelectorAll('.heart');
+            hearts.forEach(heart => {
+                heart.style.animation = 'none';
+                setTimeout(() => {
+                    heart.style.animation = 'heartbeat 1.5s infinite';
+                }, 10);
+            });
+        }
+        
+        // Initialize
+        window.addEventListener('load', function() {
+            // Initialize localStorage with sample data if empty
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([
+                    { username: 'demo', email: 'demo@contentchain.com', password: 'password' }
+                ]));
+            }
+            
+            if (!localStorage.getItem('contentData')) {
+                localStorage.setItem('contentData', JSON.stringify([
+                    {
+                        id: 1,
+                        title: 'Sample Verified Article',
+                        type: 'article',
+                        content: 'This is a sample verified article that demonstrates the ContentChain system. All information in this article has been fact-checked and verified by our AI system.',
+                        author: 'demo',
+                        hash: 'a1b2c3d4e5f6',
+                        timestamp: new Date().toISOString(),
+                        verification_status: 'verified'
+                    },
+                    {
+                        id: 2,
+                        title: 'Sample Pending Review',
+                        type: 'article',
+                        content: 'This article is currently pending review by our AI verification system. Please check back later for verification status.',
+                        author: 'demo',
+                        hash: 'f6e5d4c3b2a1',
+                        timestamp: new Date().toISOString(),
+                        verification_status: 'pending'
+                    }
+                ]));
+            }
+            
+            if (!localStorage.getItem('blockchain')) {
+                const genesisBlock = {
+                    index: 0,
+                    timestamp: new Date().toISOString(),
+                    data: [],
+                    previous_hash: '0',
+                    hash: 'e2a0c2e8b9c5d6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1'
+                };
+                localStorage.setItem('blockchain', JSON.stringify([genesisBlock]));
+            }
+            
+            checkAuth();
+            animateOnScroll();
+        });
+        
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Close modals on successful actions
+        const loginModal = document.getElementById('loginModal');
+        loginModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').style.display = 'none';
+        });
+        
+        const registerModal = document.getElementById('registerModal');
+        registerModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerError').style.display = 'none';
+        });
+        
+        const verifyModal = document.getElementById('verifyModal');
+        verifyModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('verifyForm').reset();
+            document.getElementById('verifyResult').innerHTML = '';
+        });
+        
+        const submitContentModal = document.getElementById('submitContentModal');
+        submitContentModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('submitContentForm').reset();
+            document.getElementById('submitContentResult').innerHTML = '';
+        });
+    </script>
+</body>
+</html>
